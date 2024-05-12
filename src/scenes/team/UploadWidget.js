@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const UploadWidget = ({ onUpload }) => {
+const UploadWidget = ({ onUpload,processModelResults }) => {
   const cloudinaryRef = useRef();
   const widgetRef = useRef();
   const presets = ["unsigned", "video", "eager"];
@@ -25,6 +25,7 @@ const UploadWidget = ({ onUpload }) => {
           const secureUrl = result.info.secure_url;
           console.log("Uploaded URL:111", secureUrl);
           onUpload(secureUrl); // Call the callback function with the secure URL
+          processModelResults(secureUrl)
         }
       }
     );

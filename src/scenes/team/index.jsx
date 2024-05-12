@@ -26,6 +26,7 @@ const Team = () => {
   const [source, setSource] = useState("");
   const navigate = useNavigate();
   const [navigateButton, setNavigateButton] = useState(false);
+  
   const handleChoose = (event) => {
     inputRef.current.click();
   };
@@ -86,26 +87,25 @@ const Team = () => {
       },
     },
   ];
-  // const handleOpenPicker = () => {
-  //   openPicker({
-  //     clientId:
-  //       "755173217778-92nisbhhpb0a32j6f1bcc4ior5uc8ok6.apps.googleusercontent.com",
-  //     developerKey: "AIzaSyCTXbkaOvjx3Gz5pECgbVA3u7-XYC1UPG4",
-  //     viewId: "DOCS",
-  //     // token: token, // pass oauth token in case you already have one
-  //     showUploadView: true,
-  //     showUploadFolders: true,
-  //     supportDrives: true,
-  //     multiselect: true,
-  //     // customViews: customViewsArray, // custom view
-  //     callbackFunction: (data) => {
-  //       if (data.action === "cancel") {
-  //         console.log("User clicked cancel/close button");
-  //       }
-  //       console.log(data);
-  //     },
-  //   });
-  // };
+
+  const processModelResults = (result) => {
+    console.log("ummerss",result)
+    // Process the model results here
+    if (result) {
+      // Make Axios POST call
+      axios.post("http://127.0.0.1:5000/upload", {
+        imageUrl: result
+      })
+      .then(response => {
+        console.log("POST request successful", response);
+        // Handle response if needed
+      })
+      .catch(error => {
+        console.error("Error making POST request", error);
+      });
+    }
+  };
+  
   const handleAnalyzeClick = () => {
     // Navigate to '/contacts' when button is clicked
     navigate("/contacts");
@@ -202,7 +202,7 @@ const Team = () => {
           onChange={handleFileChange}
           accept=".mov,.mp4"
         />
-        {source.length < 1 && <UploadWidget onUpload={handleUpload} />}
+        {source.length < 1 && <UploadWidget onUpload={handleUpload} processModelResults={processModelResults} />}
         {/* <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} /> */}
         {source.length > 0 && (
           <video
