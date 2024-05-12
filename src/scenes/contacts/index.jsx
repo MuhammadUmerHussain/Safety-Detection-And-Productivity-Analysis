@@ -4,11 +4,18 @@ import { tokens } from "../../theme";
 import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
-
+import axios from "axios";
+import React, { useCallback, useEffect, useState } from "react";
 const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [source, setSource] = useState(
+    "https://drive.google.com/uc?id=1XK1R0tS5A3J6pqAZh4-iJWuGcuFgJG16"
+  );
 
+  useEffect(() => {
+    console.log("asa", source);
+  }, []);
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "registrarId", headerName: "Registrar ID" },
@@ -55,8 +62,8 @@ const Contacts = () => {
   return (
     <Box m="20px">
       <Header
-        title="CONTACTS"
-        subtitle="List of Contacts for Future Reference"
+        title="VIDEO RESULT"
+        subtitle="BELOW GIVEN IS ANALYSIS OF VIDEO"
       />
       <Box
         m="40px 0 0 0"
@@ -90,11 +97,19 @@ const Contacts = () => {
           },
         }}
       >
-        <DataGrid
-          rows={mockDataContacts}
-          columns={columns}
-          components={{ Toolbar: GridToolbar }}
-        />
+        {/* {source && (
+          <video
+            className="VideoInput_video"
+            width="100%"
+            height="100%"
+            controls
+            src={source}
+          />
+        )} */}
+        <video
+          src="https://drive.google.com/file/d/1fC44-s9nQVgcg5AczLnXxalHWx-bZC6V/view?t=5"
+          controls
+        ></video>
       </Box>
     </Box>
   );

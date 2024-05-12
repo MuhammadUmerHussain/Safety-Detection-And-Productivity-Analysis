@@ -6,14 +6,23 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
+import UploadWidget from "./UploadWidget";
+import { Cloudinary } from "@cloudinary/url-gen";
+import { auto } from "@cloudinary/url-gen/actions/resize";
+import { autoGravity } from "@cloudinary/url-gen/qualifiers/gravity";
+import { AdvancedImage } from "@cloudinary/react";
 const Team = () => {
   const theme = useTheme();
+  const cld = new Cloudinary({ cloud: { cloudName: "djmt6sc3a" } });
   const inputRef = React.useRef();
+  const [video, setVideo] = useState("");
   const colors = tokens(theme.palette.mode);
-  const [source, setSource] = useState();
+  const [source, setSource] = useState("");
+  const navigate = useNavigate();
+  const [navigateButton, setNavigateButton] = useState(false);
   const handleChoose = (event) => {
     inputRef.current.click();
   };
@@ -74,6 +83,17 @@ const Team = () => {
       },
     },
   ];
+
+  const handleAnalyzeClick = () => {
+    // Navigate to '/contacts' when button is clicked
+    navigate("/contacts");
+  };
+  const handleUpload = (secureUrl) => {
+    setSource(secureUrl); // Update the source state with the secure URL
+
+    console.log("ssssss===", source);
+  };
+
   // const onDrop = useCallback((acceptedFiles) => {
   //   // Do something with the files
   //   console.log(
@@ -91,10 +111,18 @@ const Team = () => {
   //   accept: "video/*",
   // });
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    const formData = new FormData();
-    formData.append("video", file);
-
+    // const file = event.target.files[0];
+    // const formData = new FormData();
+    // formData.append("video", file);
+    // formData.append("upload_preset", "dpnd8j6i");
+    // fetch("https://api.cloudinary.com/v1_1/djmt6sc3a/video/upload", {
+    //   method: "POST",
+    //   body: formData,
+    // })
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setVideo(data.secure_url);
+    //   });
     // axios
     //   .post("http://localhost:5000/upload", formData, {
     //     headers: {
@@ -108,9 +136,9 @@ const Team = () => {
     //   .catch((error) => {
     //     console.error("Error uploading file:", error);
     //   });
-
-    const url = URL.createObjectURL(file);
-    setSource(url);
+    // const url = URL.createObjectURL(file);
+    // console.log("src", url);
+    // setSource(url);
   };
   return (
     <Box m="20px">
@@ -151,13 +179,9 @@ const Team = () => {
           onChange={handleFileChange}
           accept=".mov,.mp4"
         />
-        {!source && (
-          <button className="drag-drop-box" onClick={handleChoose}>
-            Drop Your Video
-          </button>
-        )}
+        {source.length < 1 && <UploadWidget onUpload={handleUpload} />}
         {/* <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} /> */}
-        {source && (
+        {source.length > 0 && (
           <video
             className="VideoInput_video"
             width="100%"
@@ -165,6 +189,12 @@ const Team = () => {
             controls
             src={source}
           />
+        )}
+
+        {!navigateButton && (
+          <button className="drag-drop-box" onClick={handleAnalyzeClick}>
+            View Analysis
+          </button>
         )}
       </Box>
     </Box>

@@ -36,6 +36,9 @@ background-color: #70d8bd;
   /* Example hover background color */
 }
 
+.sidebar-wrapper {
+  height: 100vh;
+}
 .drag-drop-box span {
   font-weight: bold;
   /* Example bold text */
@@ -70,4 +73,13 @@ background-color: #70d8bd;
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
+}
+.pro-sidebar>.pro-sidebar-inner>.pro-sidebar-layout {
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  z-index: 101;
 }

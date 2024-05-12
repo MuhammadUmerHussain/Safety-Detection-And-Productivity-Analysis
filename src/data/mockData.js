@@ -399,197 +399,74 @@ export const mockBarData = [
 
 export const mockPieData = [
   {
-    id: "hack",
-    label: "hack",
-    value: 239,
+    id: "Productive",
+    label: "Productive",
+    value: 0.7,
     color: "hsl(104, 70%, 50%)",
   },
   {
-    id: "make",
-    label: "make",
-    value: 170,
+    id: "UnProductive",
+    label: "UnProductive",
+    value: 0.3,
+    color: "hsl(162, 70%, 50%)",
+  },
+];
+export const mockPieData1 = [
+  {
+    id: "Safety Vest",
+    label: "Safety Vest",
+    value: 0.25,
+    color: "hsl(104, 70%, 50%)",
+  },
+  {
+    id: "Helment",
+    label: "Helment",
+    value: 0.5,
     color: "hsl(162, 70%, 50%)",
   },
   {
-    id: "go",
-    label: "go",
-    value: 322,
-    color: "hsl(291, 70%, 50%)",
-  },
-  {
-    id: "lisp",
-    label: "lisp",
-    value: 503,
-    color: "hsl(229, 70%, 50%)",
-  },
-  {
-    id: "scala",
-    label: "scala",
-    value: 584,
-    color: "hsl(344, 70%, 50%)",
+    id: "Mask",
+    label: "Mask",
+    value: 0.25,
+    color: "hsl(162, 70%, 50%)",
   },
 ];
-
 export const mockLineData = [
   {
-    id: "japan",
+    id: "Movement",
     color: tokens("dark").greenAccent[500],
     data: [
       {
-        x: "plane",
-        y: 101,
+        x: "0",
+        y: 154,
       },
       {
-        x: "helicopter",
-        y: 75,
+        x: "20",
+        y: 156,
       },
       {
-        x: "boat",
-        y: 36,
+        x: "40",
+        y: 158,
       },
       {
-        x: "train",
-        y: 216,
+        x: "60",
+        y: 160,
       },
       {
-        x: "subway",
-        y: 35,
+        x: "80",
+        y: 162,
       },
       {
-        x: "bus",
-        y: 236,
+        x: "100",
+        y: 164,
       },
       {
-        x: "car",
-        y: 88,
+        x: "120",
+        y: 166,
       },
       {
-        x: "moto",
-        y: 232,
-      },
-      {
-        x: "bicycle",
-        y: 281,
-      },
-      {
-        x: "horse",
-        y: 1,
-      },
-      {
-        x: "skateboard",
-        y: 35,
-      },
-      {
-        x: "others",
-        y: 14,
-      },
-    ],
-  },
-  {
-    id: "france",
-    color: tokens("dark").blueAccent[300],
-    data: [
-      {
-        x: "plane",
-        y: 212,
-      },
-      {
-        x: "helicopter",
-        y: 190,
-      },
-      {
-        x: "boat",
-        y: 270,
-      },
-      {
-        x: "train",
-        y: 9,
-      },
-      {
-        x: "subway",
-        y: 75,
-      },
-      {
-        x: "bus",
-        y: 175,
-      },
-      {
-        x: "car",
-        y: 33,
-      },
-      {
-        x: "moto",
-        y: 189,
-      },
-      {
-        x: "bicycle",
-        y: 97,
-      },
-      {
-        x: "horse",
-        y: 87,
-      },
-      {
-        x: "skateboard",
-        y: 299,
-      },
-      {
-        x: "others",
-        y: 251,
-      },
-    ],
-  },
-  {
-    id: "us",
-    color: tokens("dark").redAccent[200],
-    data: [
-      {
-        x: "plane",
-        y: 191,
-      },
-      {
-        x: "helicopter",
-        y: 136,
-      },
-      {
-        x: "boat",
-        y: 91,
-      },
-      {
-        x: "train",
-        y: 190,
-      },
-      {
-        x: "subway",
-        y: 211,
-      },
-      {
-        x: "bus",
-        y: 152,
-      },
-      {
-        x: "car",
-        y: 189,
-      },
-      {
-        x: "moto",
-        y: 152,
-      },
-      {
-        x: "bicycle",
-        y: 8,
-      },
-      {
-        x: "horse",
-        y: 197,
-      },
-      {
-        x: "skateboard",
-        y: 107,
-      },
-      {
-        x: "others",
-        y: 170,
+        x: "140",
+        y: 168,
       },
     ],
   },
