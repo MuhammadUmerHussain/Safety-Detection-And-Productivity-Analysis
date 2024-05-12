@@ -8,6 +8,8 @@ import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
+import useDrivePicker from "react-google-drive-picker";
 import React, { useCallback, useEffect, useState } from "react";
 import UploadWidget from "./UploadWidget";
 import { Cloudinary } from "@cloudinary/url-gen";
@@ -17,6 +19,7 @@ import { AdvancedImage } from "@cloudinary/react";
 const Team = () => {
   const theme = useTheme();
   const cld = new Cloudinary({ cloud: { cloudName: "djmt6sc3a" } });
+  const [openPicker, authResponse] = useDrivePicker();
   const inputRef = React.useRef();
   const [video, setVideo] = useState("");
   const colors = tokens(theme.palette.mode);
@@ -83,7 +86,26 @@ const Team = () => {
       },
     },
   ];
-
+  // const handleOpenPicker = () => {
+  //   openPicker({
+  //     clientId:
+  //       "755173217778-92nisbhhpb0a32j6f1bcc4ior5uc8ok6.apps.googleusercontent.com",
+  //     developerKey: "AIzaSyCTXbkaOvjx3Gz5pECgbVA3u7-XYC1UPG4",
+  //     viewId: "DOCS",
+  //     // token: token, // pass oauth token in case you already have one
+  //     showUploadView: true,
+  //     showUploadFolders: true,
+  //     supportDrives: true,
+  //     multiselect: true,
+  //     // customViews: customViewsArray, // custom view
+  //     callbackFunction: (data) => {
+  //       if (data.action === "cancel") {
+  //         console.log("User clicked cancel/close button");
+  //       }
+  //       console.log(data);
+  //     },
+  //   });
+  // };
   const handleAnalyzeClick = () => {
     // Navigate to '/contacts' when button is clicked
     navigate("/contacts");
@@ -172,6 +194,7 @@ const Team = () => {
           },
         }}
       >
+        {/* <button onClick={() => handleOpenPicker()}>Open Picker</button> */}
         <input
           ref={inputRef}
           className="VideoInput_input"

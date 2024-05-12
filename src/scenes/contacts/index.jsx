@@ -106,10 +106,17 @@ const Contacts = () => {
             src={source}
           />
         )} */}
-        <video
-          src="https://drive.google.com/file/d/1fC44-s9nQVgcg5AczLnXxalHWx-bZC6V/view?t=5"
+        {/* <video
+          src="https://drive.google.com/file/d/10NhmQdSSDvDWVLbVwKpfcvPhkT0YWpJ3/view?usp=drive_link"
           controls
-        ></video>
+        ></video> */}
+
+        <iframe
+          height="100%"
+          width="100%"
+          style={{ border: "none" }}
+          src="https://drive.google.com/file/d/1-CLuTllNVuFp4_9KEdKQZ9lCdvHW819e/preview"
+        ></iframe>
       </Box>
     </Box>
   );
