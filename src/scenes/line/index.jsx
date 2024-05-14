@@ -6,6 +6,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 const Line = () => {
   const [lineData, setLineData] = useState([]);
+  const [lineData1, setLineData1] = useState([]);
   useEffect(() => {
     const storedRes = localStorage.getItem("resData");
     const parsedRes = JSON.parse(storedRes);
@@ -21,8 +22,21 @@ const Line = () => {
           data: formattedData,
         },
       ]);
+      if (parsedRes?.LeftShoulderArr) {
+        const formattedData = parsedRes.LeftShoulderArr.map((score, index) => ({
+          x: index.toString(), // Using array index as x-value
+          y: score, // Confidence score as y-value
+        }));
+        setLineData1([
+          {
+            id: "Movement",
+            color: tokens("dark").greenAccent[500],
+            data: formattedData,
+          },
+        ]);
 
-      // Now, parsedRes contains the res object retrieved from local storage
+        // Now, parsedRes contains the res object retrieved from local storage
+      }
     }
   }, []);
 
@@ -40,7 +54,7 @@ const Line = () => {
           <LineChart data={lineData} />
         </Box>
         <Box height="39vh" width="100%">
-          <LineChart data={lineData} />
+          <LineChart data={lineData1} />
         </Box>
       </div>
     </Box>

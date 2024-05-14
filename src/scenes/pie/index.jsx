@@ -12,20 +12,14 @@ const Pie = () => {
       if (parsedRes.threshold < 0.2) {
         let data = [
           {
-            id: "Working Very Slow",
-            label: "Working Very Slow",
-            value: 0.125,
+            id: "Working Slow",
+            label: "Working Good",
+            value: 0.25,
             color: "hsl(162, 70%, 50%)",
           },
           {
-            id: "Average",
-            label: "Average",
-            value: 0.375,
-            color: "hsl(162, 70%, 50%)",
-          },
-          {
-            id: "High",
-            label: "High",
+            id: "More Effort",
+            label: "More Effort",
             value: 0.75,
             color: "hsl(162, 70%, 50%)",
           },
@@ -34,21 +28,15 @@ const Pie = () => {
       } else if (parsedRes.threshold >= 0.2 && parsedRes.threshold < 0.8) {
         let data = [
           {
-            id: "Slow",
-            label: "Slow",
-            value: 0.125,
-            color: "hsl(162, 70%, 50%)",
-          },
-          {
             id: "Working Good",
             label: "Working Good",
-            value: 0.375,
+            value: 0.75,
             color: "hsl(162, 70%, 50%)",
           },
           {
-            id: "High",
-            label: "High",
-            value: 0.75,
+            id: "More Effort",
+            label: "More Effort",
+            value: 0.25,
             color: "hsl(162, 70%, 50%)",
           },
         ];
@@ -56,21 +44,15 @@ const Pie = () => {
       } else if (parsedRes.threshold >= 0.8) {
         let data = [
           {
-            id: "Slow",
-            label: "Slow",
-            value: 0.125,
+            id: "No Effort Need",
+            label: "No Effort Need",
+            value: 0.01,
             color: "hsl(162, 70%, 50%)",
           },
           {
-            id: "Average",
-            label: "Average",
-            value: 0.375,
-            color: "hsl(162, 70%, 50%)",
-          },
-          {
-            id: "Working Swiftly",
-            label: "Working Swiftly",
-            value: 0.75,
+            id: "High Effort",
+            label: "More Effort",
+            value: 1,
             color: "hsl(162, 70%, 50%)",
           },
         ];

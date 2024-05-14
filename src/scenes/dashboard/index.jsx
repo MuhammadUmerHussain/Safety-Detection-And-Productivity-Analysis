@@ -14,12 +14,16 @@ import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 import { mockLineData } from "../../data/mockData";
 import { useEffect, useState } from "react";
+import PieChart from "../../components/PieChart";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [lineData, setLineData] = useState([]);
+  const [lineData2, setLineData2] = useState([]);
   const [lineData1, setLineData1] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [pieData, setPieData] = useState([]);
+  const [total, setTotal] = useState(1);
   useEffect(() => {
     const storedRes = localStorage.getItem("resData");
     const parsedRes = JSON.parse(storedRes);
@@ -29,6 +33,21 @@ const Dashboard = () => {
         y: score, // Confidence score as y-value
       }));
       setLineData([
+        {
+          id: "Movement",
+          color: tokens("dark").greenAccent[500],
+          data: formattedData,
+        },
+      ]);
+
+      // Now, parsedRes contains the res object retrieved from local storage
+    }
+    if (parsedRes?.LeftShoulderArr) {
+      const formattedData = parsedRes.LeftShoulderArr.map((score, index) => ({
+        x: index.toString(), // Using array index as x-value
+        y: score, // Confidence score as y-value
+      }));
+      setLineData2([
         {
           id: "Movement",
           color: tokens("dark").greenAccent[500],
@@ -118,8 +137,76 @@ const Dashboard = () => {
 
       // Now, parsedRes contains the res object retrieved from local storage
     }
+
+    if (parsedRes.counter) {
+      console.log("pares1", parsedRes.counter);
+      if (parsedRes.threshold) {
+        console.log("parsedRes.threshold", parsedRes.threshold);
+        if (parsedRes.threshold < 0.2) {
+          console.log("parsedRes.thresholds", parsedRes.threshold);
+          setTotal((parsedRes.counter * 100) / 25);
+          let data = [
+            {
+              id: `Working Slow Counts are ${parsedRes.counter}`,
+              label: `Working Slow `,
+              value: 0.25,
+              color: "hsl(162, 70%, 50%)",
+            },
+            {
+              id: `Expected Counts Should Be ${(parsedRes.counter * 100) / 25}`,
+              label: `Expected Counts`,
+              value: 0.75,
+              color: "hsl(162, 70%, 50%)",
+            },
+          ];
+          setPieData(data);
+        } else if (parsedRes.threshold >= 0.2 && parsedRes.threshold < 0.8) {
+          setTotal((parsedRes.counter * 100) / 75);
+          console.log("parsedRes.threshold m", parsedRes.threshold);
+          let data = [
+            {
+              id: `Working Good Counts are ${parsedRes.counter}`,
+              label: `Working Good `,
+              value: 0.75,
+              color: "hsl(162, 70%, 50%)",
+            },
+            {
+              id: `Expected Counts Should Be ${(parsedRes.counter * 100) / 75}`,
+              label: "More Effort",
+              value: 0.25,
+              color: "hsl(162, 70%, 50%)",
+            },
+          ];
+          setPieData(data);
+        } else if (parsedRes.threshold > 0.8) {
+          setTotal(parsedRes.counter);
+          let data = [
+            {
+              id: `Working Effectively Counts are ${parsedRes.counter}`,
+              label: `Working Effectively `,
+              value: parsedRes.counter,
+              color: "hsl(162, 70%, 50%)",
+            },
+            {
+              id: `Expected Counts Should Be ${parsedRes.counter} `,
+              label: `Expected Counts `,
+              value: parsedRes.counter,
+              color: "hsl(162, 70%, 50%)",
+            },
+          ];
+          setPieData(data);
+        }
+      }
+    }
   }, []);
 
+  const handlePrint = () => {
+    window.print();
+  };
+
+  useEffect(() => {
+    console.log("pirData", pieData);
+  }, [pieData]);
   const [time, setTime] = useState("");
   const [performance, setPerformance] = useState("");
   useEffect(() => {
@@ -132,6 +219,7 @@ const Dashboard = () => {
 
         <Box>
           <Button
+            onClick={handlePrint}
             sx={{
               backgroundColor: colors.blueAccent[700],
               color: colors.grey[100],
@@ -247,7 +335,7 @@ const Dashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Left Arm Movements
+                Right Arm Movements
               </Typography>
               <Typography
                 variant="h3"
@@ -346,6 +434,71 @@ const Dashboard = () => {
           </Box>
         </Box>
         <Box
+          gridColumn="span 8"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
+          <Box
+            mt="25px"
+            p="0 30px"
+            display="flex "
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Box>
+              <Typography
+                variant="h5"
+                fontWeight="600"
+                color={colors.grey[100]}
+              >
+                Left Arm Movements
+              </Typography>
+              <Typography
+                variant="h3"
+                fontWeight="bold"
+                color={colors.greenAccent[500]}
+              ></Typography>
+            </Box>
+            <Box>
+              <IconButton>
+                <DownloadOutlinedIcon
+                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
+                />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box height="250px" m="-20px 0 0 0">
+            <LineChart isDashboard={true} data={lineData2} />
+          </Box>
+        </Box>
+        <Box
+          gridColumn="span 4"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+          p="30px"
+        >
+          <Typography variant="h5" fontWeight="600">
+            Counts Detected
+          </Typography>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            mt="25px"
+          >
+            {/* <PieChart data={pieData} /> */}
+            <ProgressCircle progress={pieData[0]?.value} size="125" />
+            <Typography
+              variant="h5"
+              color={colors.greenAccent[500]}
+              sx={{ mt: "15px" }}
+            >
+              {`${pieData[0]?.id}`}
+            </Typography>
+            <Typography>{`${pieData[1]?.id}`} </Typography>
+          </Box>
+        </Box>
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -377,7 +530,7 @@ const Dashboard = () => {
           <Box height="200px">
             <GeographyChart isDashboard={true} />
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

@@ -3,48 +3,87 @@ import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import { mockDataInvoices } from "../../data/mockData";
 import Header from "../../components/Header";
+import { useEffect, useState } from "react";
+import PieChart from "../../components/PieChart";
 
 const Invoices = () => {
   const theme = useTheme();
+  const [lineData, setLineData] = useState([]);
+  const [total, setTotal] = useState(1);
   const colors = tokens(theme.palette.mode);
-  const columns = [
-    { field: "id", headerName: "ID" },
-    {
-      field: "name",
-      headerName: "Name",
-      flex: 1,
-      cellClassName: "name-column--cell",
-    },
-    {
-      field: "phone",
-      headerName: "Phone Number",
-      flex: 1,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-    },
-    {
-      field: "cost",
-      headerName: "Cost",
-      flex: 1,
-      renderCell: (params) => (
-        <Typography color={colors.greenAccent[500]}>
-          ${params.row.cost}
-        </Typography>
-      ),
-    },
-    {
-      field: "date",
-      headerName: "Date",
-      flex: 1,
-    },
-  ];
 
+  useEffect(() => {
+    const storedRes = localStorage.getItem("resData");
+    const parsedRes = JSON.parse(storedRes);
+
+    console.log("pares", parsedRes);
+    if (parsedRes.counter) {
+      console.log("pares1", parsedRes.counter);
+      if (parsedRes.threshold) {
+        console.log("parsedRes.threshold", parsedRes.threshold);
+        if (parsedRes.threshold < 0.2) {
+          console.log("parsedRes.thresholds", parsedRes.threshold);
+          setTotal((parsedRes.counter * 100) / 25);
+          let data = [
+            {
+              id: `Working Slow Counts are ${parsedRes.counter}`,
+              label: `Working Slow `,
+              value: 0.25,
+              color: "hsl(162, 70%, 50%)",
+            },
+            {
+              id: `Expected Counts Should Be ${(parsedRes.counter * 100) / 25}`,
+              label: `Expected Counts`,
+              value: 0.75,
+              color: "hsl(162, 70%, 50%)",
+            },
+          ];
+          setLineData(data);
+        } else if (parsedRes.threshold >= 0.2 && parsedRes.threshold < 0.8) {
+          setTotal((parsedRes.counter * 100) / 75);
+          console.log("parsedRes.threshold m", parsedRes.threshold);
+          let data = [
+            {
+              id: `Working Good Counts are ${parsedRes.counter}`,
+              label: `Working Good `,
+              value: 0.75,
+              color: "hsl(162, 70%, 50%)",
+            },
+            {
+              id: `Expected Counts Should Be ${(parsedRes.counter * 100) / 75}`,
+              label: "More Effort",
+              value: 0.25,
+              color: "hsl(162, 70%, 50%)",
+            },
+          ];
+          setLineData(data);
+        } else if (parsedRes.threshold > 0.8) {
+          setTotal(parsedRes.counter);
+          let data = [
+            {
+              id: `Working Effectively Counts are ${parsedRes.counter}`,
+              label: `Working Effectively `,
+              value: parsedRes.counter,
+              color: "hsl(162, 70%, 50%)",
+            },
+            {
+              id: `Expected Counts Should Be ${parsedRes.counter} `,
+              label: `Expected Counts `,
+              value: parsedRes.counter,
+              color: "hsl(162, 70%, 50%)",
+            },
+          ];
+          setLineData(data);
+        }
+      }
+    }
+  }, []);
+  useEffect(() => {
+    console.log("line", lineData);
+  }, [lineData]);
   return (
     <Box m="20px">
-      <Header title="INVOICES" subtitle="List of Invoice Balances" />
+      <Header title="Counts" subtitle="counts detected from video" />
       <Box
         m="40px 0 0 0"
         height="75vh"
@@ -74,7 +113,7 @@ const Invoices = () => {
           },
         }}
       >
-        <DataGrid checkboxSelection rows={mockDataInvoices} columns={columns} />
+        <PieChart data={lineData} />
       </Box>
     </Box>
   );
