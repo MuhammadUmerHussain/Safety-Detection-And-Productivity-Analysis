@@ -1,7 +1,7 @@
+import React, { useEffect, useState } from "react"; // Import useState
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
-// import { mockLineData as data } from "../data/mockData";
 
 const LineChart = ({
   isCustomLineColors = false,
@@ -11,43 +11,68 @@ const LineChart = ({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  // Define state to hold peak points
+  const [peakXValues, setPeakXValues] = useState([]);
+
+  // Function to find peaks in data
+  const findPeaks = (data) => {
+    const peaks = [];
+
+    console.log("data", data[0].data);
+    for (let i = 1; i < data[0].data.length - 2; i++) {
+      console.log("i", i);
+      const prev = data[0].data[i - 1].y;
+      const current = data[0].data[i].y;
+      const next = data[0].data[i + 1].y;
+      if (current > prev && current > next) {
+        // peaks.push(data[0].data[i].x);
+      }
+    }
+
+    // Skip first and last points as they cannot be peaks
+    // for (let i = 1; i < data[0].data.length - 2; i++) {
+    //   console.log("i", i);
+    //   // const prev = data[0].data[i - 1]?.y;
+    //   // const current = data[0].data[i]?.y;
+    //   // const next = data[0].data[i + 1]?.y;
+
+    //   // // Check if current point is a peak
+    //   // if (current > prev && current > next) {
+    //   //   peaks.push(data[i].x);
+    //   // }
+    // }
+
+    return peaks;
+  };
+
+  // When the component mounts, find and save the peak points
+  useEffect(() => {
+    if (data.length > 0) {
+      const peaks = findPeaks(data);
+      setPeakXValues(peaks);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    console.log("peak", peakXValues);
+  }, [peakXValues]);
+
   return (
     <ResponsiveLine
       data={data}
       theme={{
         axis: {
-          domain: {
-            line: {
-              stroke: colors.grey[100],
-            },
-          },
-          legend: {
-            text: {
-              fill: colors.grey[100],
-            },
-          },
+          domain: { line: { stroke: colors.grey[100] } },
+          legend: { text: { fill: colors.grey[100] } },
           ticks: {
-            line: {
-              stroke: colors.grey[100],
-              strokeWidth: 1,
-            },
-            text: {
-              fill: colors.grey[100],
-            },
+            line: { stroke: colors.grey[100], strokeWidth: 1 },
+            text: { fill: colors.grey[100] },
           },
         },
-        legends: {
-          text: {
-            fill: colors.grey[100],
-          },
-        },
-        tooltip: {
-          container: {
-            color: colors.primary[500],
-          },
-        },
+        legends: { text: { fill: colors.grey[100] } },
+        tooltip: { container: { color: colors.primary[500] } },
       }}
-      colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }} // added
+      colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }}
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}
       yScale={{
@@ -66,17 +91,18 @@ const LineChart = ({
         tickSize: 0,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "Frame Number", // added
+        legend: isDashboard ? undefined : "Frame Number",
         legendOffset: 36,
         legendPosition: "middle",
+        tickValues: peakXValues, // Display x-axis labels only at peak points
       }}
       axisLeft={{
         orient: "left",
-        tickValues: 5, // added
+        tickValues: 5,
         tickSize: 3,
         tickPadding: 5,
         tickRotation: 0,
-        legend: isDashboard ? undefined : "Arm", // added
+        legend: isDashboard ? undefined : "Arm",
         legendOffset: -40,
         legendPosition: "middle",
       }}
@@ -106,10 +132,7 @@ const LineChart = ({
           effects: [
             {
               on: "hover",
-              style: {
-                itemBackground: "rgba(0, 0, 0, .03)",
-                itemOpacity: 1,
-              },
+              style: { itemBackground: "rgba(0, 0, 0, .03)", itemOpacity: 1 },
             },
           ],
         },

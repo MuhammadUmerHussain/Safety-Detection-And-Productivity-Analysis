@@ -13,10 +13,118 @@ import BarChart from "../../components/BarChart";
 import StatBox from "../../components/StatBox";
 import ProgressCircle from "../../components/ProgressCircle";
 import { mockLineData } from "../../data/mockData";
+import { useEffect, useState } from "react";
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [lineData, setLineData] = useState([]);
+  const [lineData1, setLineData1] = useState([]);
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const storedRes = localStorage.getItem("resData");
+    const parsedRes = JSON.parse(storedRes);
+    if (parsedRes.confidenceScores) {
+      const formattedData = parsedRes.confidenceScores.map((score, index) => ({
+        x: index.toString(), // Using array index as x-value
+        y: score, // Confidence score as y-value
+      }));
+      setLineData([
+        {
+          id: "Movement",
+          color: tokens("dark").greenAccent[500],
+          data: formattedData,
+        },
+      ]);
 
+      // Now, parsedRes contains the res object retrieved from local storage
+    }
+    if (parsedRes.threshold) {
+      if (parsedRes.threshold < 0.2) {
+        let data = [
+          {
+            id: "Working Very Slow",
+            label: "Working Very Slow",
+            value: 0.125,
+            color: "hsl(162, 70%, 50%)",
+          },
+          {
+            id: "Average",
+            label: "Average",
+            value: 0.375,
+            color: "hsl(162, 70%, 50%)",
+          },
+          {
+            id: "High",
+            label: "High",
+            value: 0.75,
+            color: "hsl(162, 70%, 50%)",
+          },
+        ];
+        setLineData1(data);
+        setPerformance("slow");
+        setTime("delay");
+        setProgress(0.25);
+      } else if (parsedRes.threshold >= 0.2 && parsedRes.threshold < 0.8) {
+        let data = [
+          {
+            id: "Slow",
+            label: "Slow",
+            value: 0.125,
+            color: "hsl(162, 70%, 50%)",
+          },
+          {
+            id: "Working Good",
+            label: "Working Good",
+            value: 0.375,
+            color: "hsl(162, 70%, 50%)",
+          },
+          {
+            id: "High",
+            label: "High",
+            value: 0.75,
+            color: "hsl(162, 70%, 50%)",
+          },
+        ];
+        setLineData1(data);
+        setPerformance("good");
+        setTime("finish");
+        setProgress(0.8);
+      } else if (parsedRes.threshold >= 0.8) {
+        let data = [
+          {
+            id: "Slow",
+            label: "Slow",
+            value: 0.125,
+            color: "hsl(162, 70%, 50%)",
+          },
+          {
+            id: "Average",
+            label: "Average",
+            value: 0.375,
+            color: "hsl(162, 70%, 50%)",
+          },
+          {
+            id: "Working Swiftly",
+            label: "Working Swiftly",
+            value: 0.75,
+            color: "hsl(162, 70%, 50%)",
+          },
+        ];
+        setLineData1(data);
+        setPerformance("best");
+        setTime("finish");
+        setProgress(1);
+      }
+
+      // Now, parsedRes contains the res object retrieved from local storage
+    }
+  }, []);
+
+  const [time, setTime] = useState("");
+  const [performance, setPerformance] = useState("");
+  useEffect(() => {
+    console.log("aa", lineData);
+  }, [lineData]);
   return (
     <Box m="20px">
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -139,15 +247,13 @@ const Dashboard = () => {
                 fontWeight="600"
                 color={colors.grey[100]}
               >
-                Revenue Generated
+                Left Arm Movements
               </Typography>
               <Typography
                 variant="h3"
                 fontWeight="bold"
                 color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
+              ></Typography>
             </Box>
             <Box>
               <IconButton>
@@ -158,11 +264,11 @@ const Dashboard = () => {
             </Box>
           </Box>
           <Box height="250px" m="-20px 0 0 0">
-            <LineChart isDashboard={true} data={mockLineData} />
+            <LineChart isDashboard={true} data={lineData} />
           </Box>
         </Box>
 
-        <Box
+        {/* <Box
           gridColumn="span 4"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
@@ -211,7 +317,7 @@ const Dashboard = () => {
               </Box>
             </Box>
           ))}
-        </Box>
+        </Box> */}
 
         <Box
           gridColumn="span 4"
@@ -220,7 +326,7 @@ const Dashboard = () => {
           p="30px"
         >
           <Typography variant="h5" fontWeight="600">
-            Campaign
+            Productivity
           </Typography>
           <Box
             display="flex"
@@ -228,15 +334,15 @@ const Dashboard = () => {
             alignItems="center"
             mt="25px"
           >
-            <ProgressCircle size="125" />
+            <ProgressCircle progress={progress} size="125" />
             <Typography
               variant="h5"
               color={colors.greenAccent[500]}
               sx={{ mt: "15px" }}
             >
-              $48,352 revenue generated
+              Worker Is Showing {`${performance}`} Performance
             </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
+            <Typography>Work can be {`${time}`} </Typography>
           </Box>
         </Box>
         <Box

@@ -5,6 +5,7 @@ import { mockDataContacts } from "../../data/mockData";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
 import axios from "axios";
+
 import React, { useCallback, useEffect, useState } from "react";
 const Contacts = () => {
   const theme = useTheme();
@@ -13,9 +14,27 @@ const Contacts = () => {
     "https://drive.google.com/uc?id=1XK1R0tS5A3J6pqAZh4-iJWuGcuFgJG16"
   );
 
+  const [videoPathLocal, setvideoPathLocal] = useState("");
+
   useEffect(() => {
     console.log("asa", source);
+    const storedRes = localStorage.getItem("resData");
+    const parsedRes = JSON.parse(storedRes);
+    if (parsedRes.videoPath) {
+      setvideoPathLocal(parsedRes.videoPath);
+
+      // Now, parsedRes contains the res object retrieved from local storage
+      console.log(parsedRes);
+    }
+
+    // Convert the string back to an object using JSON.parse()
   }, []);
+
+  useEffect(() => {
+    console.log("videoPathLocal", videoPathLocal);
+
+    // Convert the string back to an object using JSON.parse()
+  }, [videoPathLocal]);
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "registrarId", headerName: "Registrar ID" },
@@ -106,17 +125,26 @@ const Contacts = () => {
             src={source}
           />
         )} */}
+
         {/* <video
           src="https://drive.google.com/file/d/10NhmQdSSDvDWVLbVwKpfcvPhkT0YWpJ3/view?usp=drive_link"
           controls
         ></video> */}
+        <img src="../../../public/assets/user.png"></img>
 
-        <iframe
-          height="100%"
-          width="100%"
-          style={{ border: "none" }}
-          src="https://drive.google.com/file/d/1-CLuTllNVuFp4_9KEdKQZ9lCdvHW819e/preview"
-        ></iframe>
+        <video width="320" height="240" controls>
+          <source src="./result.avi" type="video/avi" />
+          Your browser does not support the video tag.
+        </video>
+        {/* {videoPathLocal && (
+          <iframe
+            width="100%"
+            height="100%"
+            controls
+            src =  "./result.avi"
+            >
+            </iframe>
+        )} */}
       </Box>
     </Box>
   );
