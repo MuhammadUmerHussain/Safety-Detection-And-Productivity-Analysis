@@ -16,60 +16,67 @@ const Invoices = () => {
     const storedRes = localStorage.getItem("resData");
     const parsedRes = JSON.parse(storedRes);
 
-    console.log("pares", parsedRes);
-    if (parsedRes.counter) {
-      console.log("pares1", parsedRes.counter);
-      if (parsedRes.threshold) {
-        console.log("parsedRes.threshold", parsedRes.threshold);
-        if (parsedRes.threshold < 0.2) {
-          console.log("parsedRes.thresholds", parsedRes.threshold);
-          setTotal((parsedRes.counter * 100) / 25);
+    console.log("pares", parsedRes.data);
+    if (parsedRes.data.counter) {
+      console.log("pares1", parsedRes.data.counter);
+      if (parsedRes.data.threshold) {
+        console.log("parsedRes.data.data.threshold", parsedRes.data.threshold);
+        if (parsedRes.data.threshold < 0.2) {
+          console.log("parsedRes.data.thresholds", parsedRes.data.threshold);
+          setTotal((parsedRes.data.counter * 100) / 25);
           let data = [
             {
-              id: `Working Slow Counts are ${parsedRes.counter}`,
+              id: `Working Slow Counts are ${parsedRes.data.counter}`,
               label: `Working Slow `,
               value: 0.25,
               color: "hsl(162, 70%, 50%)",
             },
             {
-              id: `Expected Counts Should Be ${(parsedRes.counter * 100) / 25}`,
+              id: `Expected Counts Should Be ${
+                (parsedRes.data.counter * 100) / 25
+              }`,
               label: `Expected Counts`,
               value: 0.75,
               color: "hsl(162, 70%, 50%)",
             },
           ];
           setLineData(data);
-        } else if (parsedRes.threshold >= 0.2 && parsedRes.threshold < 0.8) {
-          setTotal((parsedRes.counter * 100) / 75);
-          console.log("parsedRes.threshold m", parsedRes.threshold);
+        } else if (
+          parsedRes.data.threshold >= 0.2 &&
+          parsedRes.data.threshold < 0.8
+        ) {
+          setTotal((parsedRes.data.counter * 100) / 75);
+          console.log("parsedRes.data.threshold m", parsedRes.data.threshold);
           let data = [
             {
-              id: `Working Good Counts are ${parsedRes.counter}`,
+              id: `Working Good Counts are ${parsedRes.data.counter}`,
               label: `Working Good `,
               value: 0.75,
               color: "hsl(162, 70%, 50%)",
             },
             {
-              id: `Expected Counts Should Be ${(parsedRes.counter * 100) / 75}`,
+              id: `Expected Counts Should Be ${
+                (parsedRes.data.counter * 100) / 75
+              }`,
               label: "More Effort",
               value: 0.25,
               color: "hsl(162, 70%, 50%)",
             },
           ];
           setLineData(data);
-        } else if (parsedRes.threshold > 0.8) {
-          setTotal(parsedRes.counter);
+        } else if (parsedRes.data.threshold > 0.8) {
+          setTotal(parsedRes.data.counter);
           let data = [
             {
-              id: `Working Effectively Counts are ${parsedRes.counter}`,
+              id: `Working Effectively Counts are ${parsedRes.data.counter}`,
               label: `Working Effectively `,
-              value: parsedRes.counter,
+              value: parsedRes.data.counter,
               color: "hsl(162, 70%, 50%)",
             },
             {
-              id: `Expected Counts Should Be ${parsedRes.counter} `,
+              id: `Expected Counts Should Be ${parsedRes.data.counter} `,
               label: `Expected Counts `,
-              value: parsedRes.counter,
+              value: parsedRes.data.counter,
               color: "hsl(162, 70%, 50%)",
             },
           ];

@@ -10,11 +10,13 @@ const Line = () => {
   useEffect(() => {
     const storedRes = localStorage.getItem("resData");
     const parsedRes = JSON.parse(storedRes);
-    if (parsedRes.confidenceScores) {
-      const formattedData = parsedRes.confidenceScores.map((score, index) => ({
-        x: index.toString(), // Using array index as x-value
-        y: score, // Confidence score as y-value
-      }));
+    if (parsedRes.data.confidenceScores) {
+      const formattedData = parsedRes.data.confidenceScores.map(
+        (score, index) => ({
+          x: index.toString(), // Using array index as x-value
+          y: score, // Confidence score as y-value
+        })
+      );
       setLineData([
         {
           id: "Movement",
@@ -22,8 +24,8 @@ const Line = () => {
           data: formattedData,
         },
       ]);
-      if (parsedRes?.LeftShoulderArr) {
-        const formattedData = parsedRes.LeftShoulderArr.map((score, index) => ({
+      if (parsedRes?.data?.LeftArmArr) {
+        const formattedData = parsedRes.data.LeftArmArr.map((score, index) => ({
           x: index.toString(), // Using array index as x-value
           y: score, // Confidence score as y-value
         }));

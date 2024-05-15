@@ -8,8 +8,8 @@ const Pie = () => {
   useEffect(() => {
     const storedRes = localStorage.getItem("resData");
     const parsedRes = JSON.parse(storedRes);
-    if (parsedRes.threshold) {
-      if (parsedRes.threshold < 0.2) {
+    if (parsedRes.data.threshold) {
+      if (parsedRes.data.threshold < 0.2) {
         let data = [
           {
             id: "Working Slow",
@@ -25,7 +25,10 @@ const Pie = () => {
           },
         ];
         setLineData(data);
-      } else if (parsedRes.threshold >= 0.2 && parsedRes.threshold < 0.8) {
+      } else if (
+        parsedRes.data.threshold >= 0.2 &&
+        parsedRes.data.threshold < 0.8
+      ) {
         let data = [
           {
             id: "Working Good",
@@ -41,7 +44,7 @@ const Pie = () => {
           },
         ];
         setLineData(data);
-      } else if (parsedRes.threshold >= 0.8) {
+      } else if (parsedRes.data.threshold >= 0.8) {
         let data = [
           {
             id: "No Effort Need",
@@ -59,7 +62,7 @@ const Pie = () => {
         setLineData(data);
       }
 
-      // Now, parsedRes contains the res object retrieved from local storage
+      // Now, parsedRes.data contains the res object retrieved from local storage
     }
   }, []);
   return (

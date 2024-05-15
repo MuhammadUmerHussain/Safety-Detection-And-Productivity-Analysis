@@ -24,14 +24,89 @@ const Dashboard = () => {
   const [progress, setProgress] = useState(0);
   const [pieData, setPieData] = useState([]);
   const [total, setTotal] = useState(1);
+  const [detectedElements, setDetetedElements] = useState([]);
+
   useEffect(() => {
     const storedRes = localStorage.getItem("resData");
     const parsedRes = JSON.parse(storedRes);
-    if (parsedRes.confidenceScores) {
-      const formattedData = parsedRes.confidenceScores.map((score, index) => ({
-        x: index.toString(), // Using array index as x-value
-        y: score, // Confidence score as y-value
-      }));
+    if (parsedRes.data.labels) {
+      const validItems = ["Hardhat", "Gloves", "Mask", "Safety Vest"];
+      const filteredItems = parsedRes.data.labels.filter((item) =>
+        validItems.includes(item)
+      );
+
+      const uniqueItems = [...new Set(filteredItems)];
+
+      const mockPieData = uniqueItems.map((item) => {
+        let data = {};
+
+        switch (item) {
+          case "Safety Vest":
+            data = {
+              id: item,
+              label: item,
+              value: 0.2,
+              color: "hsl(162, 70%, 50%)",
+            };
+            break;
+          case "Hardhat":
+            data = {
+              id: item,
+              label: item,
+              value: 0.7,
+              color: "hsl(104, 70%, 50%)",
+            };
+            break;
+          case "Gloves":
+            data = {
+              id: item,
+              label: item,
+              value: 0.2,
+              color: "hsl(104, 70%, 50%)",
+            };
+            break;
+          case "Mask":
+            data = {
+              id: item,
+              label: item,
+              value: 0.1,
+              color: "hsl(104, 70%, 50%)",
+            };
+            break;
+          default:
+            break;
+        }
+
+        return data;
+      });
+      const sum = mockPieData.reduce(
+        (accumulator, currentValue) => accumulator + currentValue.value,
+        0
+      );
+      const remainingValue = 1 - sum;
+      const rdata = {
+        id: "No Safety",
+        label: "No Safety",
+        value: remainingValue,
+        color: "hsl(104, 70%, 50%)",
+      };
+      console.log("mock", mockPieData);
+      if (mockPieData.length > 0) {
+        mockPieData.push(rdata);
+        setDetetedElements(mockPieData);
+      } else {
+        setDetetedElements(mockPieData);
+      }
+
+      // Now, parsedRes contains the res object retrieved from local storage
+    }
+    if (parsedRes.data.confidenceScores) {
+      const formattedData = parsedRes.data.confidenceScores.map(
+        (score, index) => ({
+          x: index.toString(), // Using array index as x-value
+          y: score, // Confidence score as y-value
+        })
+      );
       setLineData([
         {
           id: "Movement",
@@ -42,11 +117,13 @@ const Dashboard = () => {
 
       // Now, parsedRes contains the res object retrieved from local storage
     }
-    if (parsedRes?.LeftShoulderArr) {
-      const formattedData = parsedRes.LeftShoulderArr.map((score, index) => ({
-        x: index.toString(), // Using array index as x-value
-        y: score, // Confidence score as y-value
-      }));
+    if (parsedRes?.data.LeftShoulderArr) {
+      const formattedData = parsedRes.data.LeftShoulderArr.map(
+        (score, index) => ({
+          x: index.toString(), // Using array index as x-value
+          y: score, // Confidence score as y-value
+        })
+      );
       setLineData2([
         {
           id: "Movement",
@@ -57,8 +134,8 @@ const Dashboard = () => {
 
       // Now, parsedRes contains the res object retrieved from local storage
     }
-    if (parsedRes.threshold) {
-      if (parsedRes.threshold < 0.2) {
+    if (parsedRes.data.threshold) {
+      if (parsedRes.data.threshold < 0.2) {
         let data = [
           {
             id: "Working Very Slow",
@@ -83,7 +160,10 @@ const Dashboard = () => {
         setPerformance("slow");
         setTime("delay");
         setProgress(0.25);
-      } else if (parsedRes.threshold >= 0.2 && parsedRes.threshold < 0.8) {
+      } else if (
+        parsedRes.data.threshold >= 0.2 &&
+        parsedRes.data.threshold < 0.8
+      ) {
         let data = [
           {
             id: "Slow",
@@ -108,7 +188,7 @@ const Dashboard = () => {
         setPerformance("good");
         setTime("finish");
         setProgress(0.8);
-      } else if (parsedRes.threshold >= 0.8) {
+      } else if (parsedRes.data.threshold >= 0.8) {
         let data = [
           {
             id: "Slow",
@@ -138,59 +218,66 @@ const Dashboard = () => {
       // Now, parsedRes contains the res object retrieved from local storage
     }
 
-    if (parsedRes.counter) {
-      console.log("pares1", parsedRes.counter);
-      if (parsedRes.threshold) {
-        console.log("parsedRes.threshold", parsedRes.threshold);
-        if (parsedRes.threshold < 0.2) {
-          console.log("parsedRes.thresholds", parsedRes.threshold);
-          setTotal((parsedRes.counter * 100) / 25);
+    if (parsedRes.data.counter) {
+      console.log("pares1", parsedRes.data.counter);
+      if (parsedRes.data.threshold) {
+        console.log("parsedRes.threshold", parsedRes.data.threshold);
+        if (parsedRes.data.threshold < 0.2) {
+          console.log("parsedRes.thresholds", parsedRes.data.threshold);
+          setTotal((parsedRes.data.counter * 100) / 25);
           let data = [
             {
-              id: `Working Slow Counts are ${parsedRes.counter}`,
+              id: `Working Slow Counts are ${parsedRes.data.counter}`,
               label: `Working Slow `,
               value: 0.25,
               color: "hsl(162, 70%, 50%)",
             },
             {
-              id: `Expected Counts Should Be ${(parsedRes.counter * 100) / 25}`,
+              id: `Expected Counts Should Be ${
+                (parsedRes.data.counter * 100) / 25
+              }`,
               label: `Expected Counts`,
               value: 0.75,
               color: "hsl(162, 70%, 50%)",
             },
           ];
           setPieData(data);
-        } else if (parsedRes.threshold >= 0.2 && parsedRes.threshold < 0.8) {
-          setTotal((parsedRes.counter * 100) / 75);
-          console.log("parsedRes.threshold m", parsedRes.threshold);
+        } else if (
+          parsedRes.data.threshold >= 0.2 &&
+          parsedRes.data.threshold < 0.8
+        ) {
+          setTotal((parsedRes.data.counter * 100) / 75);
+          console.log("parsedRes.threshold m", parsedRes.data.threshold);
           let data = [
             {
-              id: `Working Good Counts are ${parsedRes.counter}`,
+              id: `Working Good Counts are ${parsedRes.data.counter}`,
               label: `Working Good `,
               value: 0.75,
               color: "hsl(162, 70%, 50%)",
             },
             {
-              id: `Expected Counts Should Be ${(parsedRes.counter * 100) / 75}`,
+              id: `Expected Counts Should Be ${
+                (parsedRes.data.counter * 100) / 75
+              }`,
               label: "More Effort",
               value: 0.25,
               color: "hsl(162, 70%, 50%)",
             },
           ];
           setPieData(data);
-        } else if (parsedRes.threshold > 0.8) {
-          setTotal(parsedRes.counter);
+        } else if (parsedRes.data.threshold > 0.8) {
+          setTotal(parsedRes.data.counter);
           let data = [
             {
-              id: `Working Effectively Counts are ${parsedRes.counter}`,
+              id: `Working Effectively Counts are ${parsedRes.data.counter}`,
               label: `Working Effectively `,
-              value: parsedRes.counter,
+              value: parsedRes.data.counter,
               color: "hsl(162, 70%, 50%)",
             },
             {
-              id: `Expected Counts Should Be ${parsedRes.counter} `,
+              id: `Expected Counts Should Be ${parsedRes.data.counter} `,
               label: `Expected Counts `,
-              value: parsedRes.counter,
+              value: parsedRes.data.counter,
               color: "hsl(162, 70%, 50%)",
             },
           ];
@@ -205,8 +292,8 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    console.log("pirData", pieData);
-  }, [pieData]);
+    console.log("detectedElements", detectedElements);
+  }, [detectedElements]);
   const [time, setTime] = useState("");
   const [performance, setPerformance] = useState("");
   useEffect(() => {
@@ -240,82 +327,21 @@ const Dashboard = () => {
         gridAutoRows="140px"
         gap="20px"
       >
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="12,361"
-            subtitle="Emails Sent"
-            progress="0.75"
-            increase="+14%"
-            icon={
-              <EmailIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="431,225"
-            subtitle="Sales Obtained"
-            progress="0.50"
-            increase="+21%"
-            icon={
-              <PointOfSaleIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="32,441"
-            subtitle="New Clients"
-            progress="0.30"
-            increase="+5%"
-            icon={
-              <PersonAddIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
-        <Box
-          gridColumn="span 3"
-          backgroundColor={colors.primary[400]}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <StatBox
-            title="1,325,134"
-            subtitle="Traffic Received"
-            progress="0.80"
-            increase="+43%"
-            icon={
-              <TrafficIcon
-                sx={{ color: colors.greenAccent[600], fontSize: "26px" }}
-              />
-            }
-          />
-        </Box>
+        {detectedElements?.map((item) => (
+          <Box
+            gridColumn="span 3"
+            backgroundColor={colors.primary[400]}
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+          >
+            <StatBox
+              title={item.id}
+              subtitle={`item value is ${item.value}`}
+              progress={item.value}
+            />
+          </Box>
+        ))}
 
         <Box
           gridColumn="span 8"

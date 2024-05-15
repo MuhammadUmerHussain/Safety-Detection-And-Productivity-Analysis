@@ -11,30 +11,38 @@ const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [source, setSource] = useState(
-    "https://drive.google.com/uc?id=1XK1R0tS5A3J6pqAZh4-iJWuGcuFgJG16"
+    "https://res.cloudinary.com/djmt6sc3a/video/upload/v1715800516/lqnjmbdcyp7hykhkqp0u.avi"
   );
 
   const [videoPathLocal, setvideoPathLocal] = useState("");
 
-  useEffect(() => {
-    console.log("asa", source);
-    const storedRes = localStorage.getItem("resData");
-    const parsedRes = JSON.parse(storedRes);
-    if (parsedRes.videoPath) {
-      setvideoPathLocal(parsedRes.videoPath);
+  // useEffect(() => {
+  //   console.log(
+  //     "asa",
+  //     "https://res.cloudinary.com/djmt6sc3a/video/upload/v1715800516/lqnjmbdcyp7hykhkqp0u.avi"
+  //   );
+  //   const storedRes = localStorage.getItem("resData");
+  //   const parsedRes = JSON.parse(storedRes);
+  //   setvideoPathLocal(
+  //     "https://res.cloudinary.com/djmt6sc3a/video/upload/v1715800516/lqnjmbdcyp7hykhkqp0u.avi"
+  //   );
+  //   if (parsedRes.videoPath) {
+  //     setvideoPathLocal(
+  //       "https://res.cloudinary.com/djmt6sc3a/video/upload/v1715800516/lqnjmbdcyp7hykhkqp0u.avi"
+  //     );
 
-      // Now, parsedRes contains the res object retrieved from local storage
-      console.log(parsedRes);
-    }
+  //     // Now, parsedRes contains the res object retrieved from local storage
+  //     console.log(parsedRes);
+  //   }
 
-    // Convert the string back to an object using JSON.parse()
-  }, []);
+  //   // Convert the string back to an object using JSON.parse()
+  // }, []);
 
-  useEffect(() => {
-    console.log("videoPathLocal", videoPathLocal);
+  // useEffect(() => {
+  //   console.log("videoPathLocal", videoPathLocal);
 
-    // Convert the string back to an object using JSON.parse()
-  }, [videoPathLocal]);
+  //   // Convert the string back to an object using JSON.parse()
+  // }, [videoPathLocal]);
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
     { field: "registrarId", headerName: "Registrar ID" },
@@ -132,10 +140,13 @@ const Contacts = () => {
         ></video> */}
         <img src="../../../public/assets/user.png"></img>
 
-        <video width="320" height="240" controls>
-          <source src="./result.avi" type="video/avi" />
+        {/* <video width="320" height="240" controls>
+          <source
+            src={videoPathLocal}
+            type="video/avi"
+          />
           Your browser does not support the video tag.
-        </video>
+        </video> */}
         {/* {videoPathLocal && (
           <iframe
             width="100%"

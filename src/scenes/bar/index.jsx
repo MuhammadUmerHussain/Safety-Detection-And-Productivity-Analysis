@@ -9,9 +9,9 @@ const Bar = () => {
   useEffect(() => {
     const storedRes = localStorage.getItem("resData");
     const parsedRes = JSON.parse(storedRes);
-    if (parsedRes.labels) {
+    if (parsedRes.data.labels) {
       const validItems = ["Hardhat", "Gloves", "Mask", "Safety Vest"];
-      const filteredItems = parsedRes.labels.filter((item) =>
+      const filteredItems = parsedRes.data.labels.filter((item) =>
         validItems.includes(item)
       );
 
