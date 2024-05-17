@@ -67,7 +67,7 @@ const Pie = () => {
   }, []);
   return (
     <Box m="20px">
-      <Header title="Safety Detection" subtitle="" />
+      <Header title="Productivity Analysis" subtitle="" />
       <Box height="75vh">
         <PieChart data={lineData} />
       </Box>

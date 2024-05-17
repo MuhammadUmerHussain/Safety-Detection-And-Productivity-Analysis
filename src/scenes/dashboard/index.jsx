@@ -30,7 +30,7 @@ const Dashboard = () => {
     const storedRes = localStorage.getItem("resData");
     const parsedRes = JSON.parse(storedRes);
     if (parsedRes.data.labels) {
-      const validItems = ["Hardhat", "Gloves", "Mask", "Safety Vest"];
+      const validItems = ["hard hat", "Gloves", "Mask", "safety vest"];
       const filteredItems = parsedRes.data.labels.filter((item) =>
         validItems.includes(item)
       );
@@ -41,7 +41,7 @@ const Dashboard = () => {
         let data = {};
 
         switch (item) {
-          case "Safety Vest":
+          case "safety vest":
             data = {
               id: item,
               label: item,
@@ -49,7 +49,7 @@ const Dashboard = () => {
               color: "hsl(162, 70%, 50%)",
             };
             break;
-          case "Hardhat":
+          case "hard hat":
             data = {
               id: item,
               label: item,

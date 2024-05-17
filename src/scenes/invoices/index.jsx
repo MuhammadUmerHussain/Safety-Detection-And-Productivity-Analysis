@@ -76,7 +76,7 @@ const Invoices = () => {
             {
               id: `Expected Counts Should Be ${parsedRes.data.counter} `,
               label: `Expected Counts `,
-              value: parsedRes.data.counter,
+              value: 0,
               color: "hsl(162, 70%, 50%)",
             },
           ];

@@ -10,7 +10,7 @@ const Bar = () => {
     const storedRes = localStorage.getItem("resData");
     const parsedRes = JSON.parse(storedRes);
     if (parsedRes.data.labels) {
-      const validItems = ["Hardhat", "Gloves", "Mask", "Safety Vest"];
+      const validItems = ["hard hat", "Gloves", "Mask", "safety vest"];
       const filteredItems = parsedRes.data.labels.filter((item) =>
         validItems.includes(item)
       );
@@ -21,7 +21,7 @@ const Bar = () => {
         let data = {};
 
         switch (item) {
-          case "Safety Vest":
+          case "safety vest":
             data = {
               id: item,
               label: item,
@@ -29,7 +29,7 @@ const Bar = () => {
               color: "hsl(162, 70%, 50%)",
             };
             break;
-          case "Hardhat":
+          case "hard hat":
             data = {
               id: item,
               label: item,
@@ -77,6 +77,8 @@ const Bar = () => {
         setLineData(rdata);
       }
 
+      console.log("final", mockPieData);
+
       // Now, parsedRes contains the res object retrieved from local storage
     }
   }, []);
@@ -86,7 +88,7 @@ const Bar = () => {
   }, [lineData]);
   return (
     <Box m="20px">
-      <Header title="Productivity Analysis Graph" subtitle="" />
+      <Header title="Safety Detection" subtitle="" />
       <Box height="75vh">
         <PieChart data={lineData} />
       </Box>
