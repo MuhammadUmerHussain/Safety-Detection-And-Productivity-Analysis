@@ -23,7 +23,7 @@ Clerk Authentication
 ``` git clone  https://github.com/MuhammadUmerHussain/SafetyDetection.git ``` 
 cd SafetyDetection
 
-#For Frontend 
+# For Frontend 
 give your cloudinary api key upload widget 
 
 https://cloudinary.com/documentation/upload_widget 
