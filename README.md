@@ -1,7 +1,7 @@
-#Automated Construction Site Supervision System
+#  Automated Construction Site Supervision System
 This project is a web application that enables users to upload videos for real-time object detection, action recognition, and activity counting using YOLOv8, MediaPipe, and a Python-based Flask server. The application leverages Cloudinary for video storage and retrieval.
 
-#Key Features
+# Key Features
 
 Object Detection: Accurately detects helmets, safety vests, and masks in uploaded videos using YOLOv8, a state-of-the-art object detection model.
 Action Recognition: Employs MediaPipe's pose estimation capabilities to count sawing actions, arm movements (left and right), and shoulder movements (left and right) in the video.
@@ -10,13 +10,13 @@ Cloudinary Integration: Securely stores and manages uploaded videos using Cloudi
 React Frontend: Provides a user-friendly interface for video upload, object detection results display, and graph visualization.
 Technologies Used
 
-#Backend:
+# Backend:
 Python
 Flask
 YOLOv8
 MediaPipe
 Cloudinary 
-#Frontend:
+# Frontend:
 React
 Clerk Authentication
 
